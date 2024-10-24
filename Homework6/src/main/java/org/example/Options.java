@@ -53,6 +53,10 @@ public class Options implements Runnable{
 
     @Override
     public void run() {
+        S3Service s3Service = new S3Service();
+        DynamoDBService dynamoDBService = new DynamoDBService();
 
+        Consumer consumer = new Consumer(s3Service, dynamoDBService, this);
+        consumer.StartingReceving();
     }
 }
