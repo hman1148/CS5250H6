@@ -7,7 +7,6 @@ import picocli.CommandLine.Option;
 
 @Command(name = "Options", mixinStandardHelpOptions = true, description = "Options for the application")
 public class Options implements Runnable{
-
     @Option(names = {"-s3", "--s3-strategy"}, description = "The storage strategy to use", required = true)
     private String StorageStrategy;
 
@@ -16,7 +15,7 @@ public class Options implements Runnable{
     @Option(names = {"-d", "--dynamodb-table"}, description = "Name of the DynamoDB table to store widgets", required = false)
     private String DynamoDBTable;
 
-    @Option(names = {"-r", "--bucket2"}, description = "Name of the S3 bucket to read widget requests from (Bucket 2)")
+    @Option(names = {"-r", "--bucket2"}, description = "Name of the S3 bucket to read widget requests from (Bucket 2)", required = true)
     private String Bucket2;
 
     public String getStorageStrategy() {

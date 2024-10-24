@@ -1,9 +1,11 @@
 plugins {
     id 'java'
+    id 'application' // Apply the application plugin
+    id 'com.github.johnrengelman.shadow' version '8.1.1' // Apply the Shadow plugin
 }
 
 group = 'org.example'
-version = '1.0-SNAPSHOT'
+version = '1.0'
 
 repositories {
     mavenCentral()
@@ -17,12 +19,49 @@ dependencies {
     implementation("software.amazon.awssdk:ssooidc")
     implementation(platform("org.apache.logging.log4j:log4j-bom:2.20.0"))
     implementation("org.apache.logging.log4j:log4j-slf4j2-impl")
-    implementation ('software.amazon.awssdk:dynamodb')
+    implementation('software.amazon.awssdk:dynamodb')
     implementation 'info.picocli:picocli:4.7.4'
     implementation("org.apache.logging.log4j:log4j-1.2-api")
-    testImplementation("org.junit.jupiter:junit-jupiter")
+
+    // Mockito
+    testImplementation 'org.mockito:mockito-core:5.5.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.5.0'
+
+    // AWS SDK test utilities (for integration tests)
+    testImplementation 'software.amazon.awssdk:aws-core'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
 }
 
 test {
     useJUnitPlatform()
+}
+
+// Set the main class to org.example.Main
+mainClassName = 'org.example.Main'
+
+tasks.jar {
+    archiveBaseName.set("Consumer")
+    archiveClassifier.set('')
+    archiveVersion.set('1.0')
+    manifest {
+        attributes(
+                'Main-Class': mainClassName
+        )
+    }
+}
+
+// Set the source and target compatibility to Java 8
+tasks.withType(JavaCompile).configureEach {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
+
+// Configure the Shadow JAR task
+tasks.shadowJar {
+    archiveClassifier.set('all')
+    manifest {
+        attributes(
+                'Main-Class': mainClassName
+        )
+    }
 }
