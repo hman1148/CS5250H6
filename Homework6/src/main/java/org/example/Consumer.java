@@ -19,11 +19,11 @@ public class Consumer {
             try {
                 String widgetRequest = this.s3Service.readWidgetRequestsFromBucket(options.getBucket2());
 
-                if (this.options.getStorageStrategy().equalsIgnoreCase("s3") && !(String.valueOf(this.options.getBucket3()) == null)) {
-                    this.s3Service.storeWidgetsInS3(this.options.getBucket3(), widgetRequest);
-                } else if (this.options.getStorageStrategy().equalsIgnoreCase("dynamodb") && !(String.valueOf(this.options.getDynamoDBTable()) == null)) {
-                    this.dynamoDBService.storeWidgetsInDynamoDB(this.options.getDynamoDBTable(), widgetRequest);
-                }
+                // if (this.options.getStorageStrategy().equalsIgnoreCase("s3") && !(String.valueOf(this.options.getBucket3()) == null)) {
+                //     this.s3Service.storeWidgetsInS3(this.options.getBucket3(), widgetRequest);
+                // } else if (this.options.getStorageStrategy().equalsIgnoreCase("dynamodb") && !(String.valueOf(this.options.getDynamoDBTable()) == null)) {
+                //     this.dynamoDBService.storeWidgetsInDynamoDB(this.options.getDynamoDBTable(), widgetRequest);
+                // }
 
                 Thread.sleep(100);
             } catch (SdkException e) {
@@ -37,4 +37,10 @@ public class Consumer {
             }
         }
     }
+
+//    private RequestType processRequest(String widgetRequest) {
+//
+//    }
+//
+
 }

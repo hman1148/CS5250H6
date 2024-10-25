@@ -18,7 +18,6 @@ public class DynamoDBService {
 
     public void storeWidgetsInDynamoDB(String tableName, String widgetInfo) {
         try {
-
             HashMap<String, AttributeValue> item = new HashMap<>();
             item.put("WidgetId", AttributeValue.builder().s(UUID.randomUUID().toString()).build());
             item.put("Data", AttributeValue.builder().s(widgetInfo).build());
@@ -34,6 +33,10 @@ public class DynamoDBService {
         } catch (SdkException ex) {
             System.err.println("Failed to store widget: " + widgetInfo + " into DynamoDB " + ex.getMessage());
         }
+    }
+
+    public void test() {
+        
     }
 
 }
