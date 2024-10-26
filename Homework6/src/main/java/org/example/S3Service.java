@@ -1,5 +1,6 @@
 package org.example;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import software.amazon.awssdk.core.exception.SdkException;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -59,22 +60,24 @@ public class S3Service {
         return null;
     }
 
-    public void storeWidgetsInS3(String bucket, String widgetInfo) {
+    public void storeWidgetsInS3(String bucket, Widget widget) {
         try {
-            // Generate a random key for the new object
+            String ownerKey = widget.getOwner().replace(" ", "-").toLowerCase();
+            String objectKey = String.format("widgets/%s/%s", ownerKey, widget.getWidgetId());
 
-            String objectKey = UUID.randomUUID().toString();
+            ObjectMapper objectMapper = new ObjectMapper();
+            String widgetJson = objectMapper.writeValueAsString(widget);
 
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                     .bucket(bucket)
                     .key(objectKey)
                     .build();
 
-            s3Client.putObject(putObjectRequest, RequestBody.fromString(widgetInfo));
+            s3Client.putObject(putObjectRequest, RequestBody.fromString(widgetJson));
 
-            System.out.println("Widget " + widgetInfo + " stored in bucket " + bucket);
-        } catch (SdkException ex) {
-            System.err.println("Failed to store widget " + widgetInfo + " in s3 " + ex.getMessage());
+            System.out.println("Widget " + widget.getWidgetId() + " stored in bucket " + bucket);
+        } catch (Exception ex) {
+            System.err.println("Failed to store widget " + widget.getWidgetId() + " in s3 " + ex.getMessage());
         }
     }
 

@@ -5,23 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="296ab6d5-aa30-4112-9b9d-5bccf018fc27" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/RequestType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Widget.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/DynamoDBServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jpa-buddy.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ConsumerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/DynamoDbServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/S3ServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Consumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Consumer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/DynamoDBService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/DynamoDBService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Options.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Options.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ConsumerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ConsumerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/S3ServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/S3ServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/S3Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/S3Service.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Widget.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Widget.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/UnitTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/UnitTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,9 +36,17 @@
         <task path="">
           <activation />
         </task>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Homework6" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -73,21 +78,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.C:/Users/Hunter Peart/CS5250/Homework6pt2/Homework6 [build].executor": "Run",
-    "Gradle.C:/Users/Hunter Peart/CS5250/Homework6pt2/Homework6.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Hunter Peart/CS5250/Homework6pt2/Homework6",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.C:/Users/Hunter Peart/CS5250/Homework6pt2/Homework6 [build].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.C:/Users/Hunter Peart/CS5250/Homework6pt2/Homework6.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Hunter Peart/CS5250/Homework6pt2/Homework6&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;
   }
-}]]></component>
+}</component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="gradle build" />

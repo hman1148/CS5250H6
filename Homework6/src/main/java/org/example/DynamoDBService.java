@@ -1,26 +1,41 @@
 package org.example;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import software.amazon.awssdk.core.exception.SdkException;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class DynamoDBService {
 
     private final DynamoDbClient dynamoDbClient;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public DynamoDBService() {
         dynamoDbClient = DynamoDbClient.builder().build();
     }
 
-    public void storeWidgetsInDynamoDB(String tableName, String widgetInfo) {
+    public void storeWidgetsInDynamoDB(String tableName, Widget widget) {
         try {
+            // Convert widget object to a map
+            Map<String, Object> widgetMap = objectMapper.convertValue(widget, Map.class);
+
+            // Create a HashMap to store attrs in DynamoDB
             HashMap<String, AttributeValue> item = new HashMap<>();
-            item.put("WidgetId", AttributeValue.builder().s(UUID.randomUUID().toString()).build());
-            item.put("Data", AttributeValue.builder().s(widgetInfo).build());
+
+            // Add each widget value to a key and value for dynamo
+            for (Map.Entry<String, Object> entry: widgetMap.entrySet()) {
+                String key = entry.getKey();
+                Object value = entry.getValue();
+
+                if (value != null) {
+                    item.put(key, AttributeValue.builder().s(value.toString()).build());
+                }
+            }
 
             PutItemRequest putItemRequest = PutItemRequest.builder()
                     .tableName(tableName)
@@ -28,15 +43,11 @@ public class DynamoDBService {
                     .build();
 
             dynamoDbClient.putItem(putItemRequest);
-            System.out.println("Widget: " + widgetInfo + " stored in DynamoDB");
+            System.out.println("Widget: " + widget.getWidgetId() + " stored in DynamoDB");
 
         } catch (SdkException ex) {
-            System.err.println("Failed to store widget: " + widgetInfo + " into DynamoDB " + ex.getMessage());
+            System.err.println("Failed to store widget: " + widget.getWidgetId() + " into DynamoDB " + ex.getMessage());
         }
-    }
-
-    public void test() {
-        
     }
 
 }

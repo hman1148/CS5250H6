@@ -1,32 +1,49 @@
-package main.java.org.example;
+package org.example;
 
-import java.beans.JavaBean;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 public class Widget {
 
+    private String type;
+    private String requestId;
     private String widgetId;
-    private String ownder;
+    private String owner;
     private String label;
     private String description;
-    private SubAttributes subAttributes;
+    private List<OtherAttribute> otherAttributes;
 
     @JsonIgnore
-    private String type;
+    private String field;
 
-    // @JsonIgnore
-    // private
-
-    public Widget(String widgetId, String ownder, String label, String description, SubAttributes subAttributes) {
+    public Widget(String type, String requestId, String widgetId, String owner, String label,
+                  String description, List<OtherAttribute> otherAttributes, String field) {
+        this.type = type;
+        this.requestId = requestId;
         this.widgetId = widgetId;
-        this.ownder = ownder;
+        this.owner = owner;
         this.label = label;
         this.description = description;
-        this.subAttributes = subAttributes;
+        this.otherAttributes = otherAttributes;
+        this.field = field;
     }
 
+    public String getType() {
+        return type;
+    }
 
+    public void setType(String type) {
+        this.type = type;
+    }
 
+    public String getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
+    }
 
     public String getWidgetId() {
         return widgetId;
@@ -36,12 +53,12 @@ public class Widget {
         this.widgetId = widgetId;
     }
 
-    public String getOwnder() {
-        return ownder;
+    public String getOwner() {
+        return owner;
     }
 
-    public void setOwnder(String ownder) {
-        this.ownder = ownder;
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     public String getLabel() {
@@ -60,20 +77,27 @@ public class Widget {
         this.description = description;
     }
 
-    public SubAttributes getSubAttributes() {
-        return subAttributes;
+    public List<OtherAttribute> getOtherAttributes() {
+        return otherAttributes;
     }
 
-    public void setSubAttributes(SubAttributes subAttributes) {
-        this.subAttributes = subAttributes;
+    public void setOtherAttributes(List<OtherAttribute> otherAttributes) {
+        this.otherAttributes = otherAttributes;
     }
 
-    public static class SubAttributes {
+    public String getField() {
+        return field;
+    }
+
+    public void setField(String field) {
+        this.field = field;
+    }
+
+    public static class OtherAttribute {
         private String name;
         private String value;
 
-
-        public SubAttributes(String name, String value) {
+        public OtherAttribute(String name, String value) {
             this.name = name;
             this.value = value;
         }
