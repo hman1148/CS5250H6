@@ -1,14 +1,19 @@
 package org.example;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
+import ch.qos.logback.core.ConsoleAppender;
+import ch.qos.logback.core.FileAppender;
+import org.slf4j.LoggerFactory;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Command(name = "Options", mixinStandardHelpOptions = true, description = "Options for the application")
 public class Options implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger(Options.class);
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(Options.class);
 
     @Option(names = {"-b", "--bucket3"}, description = "Name of the S3 Bucket to store widgets (Bucket 3)", required = false)
     private String Bucket3;
@@ -46,6 +51,9 @@ public class Options implements Runnable {
     @Override
     public void run() {
         // Log the provided options
+
+        ConfigureLogging();
+        
         logger.info("Starting application with the following options:");
         logger.info("Bucket 3: {}", Bucket3);
         logger.info("DynamoDB Table: {}", DynamoDBTable);
@@ -58,11 +66,37 @@ public class Options implements Runnable {
             Consumer consumer = new Consumer(s3Service, dynamoDBService, this);
             consumer.StartingReceving();
             
-            // Log the success of the service start
             logger.info("Services started successfully.");
         } catch (Exception e) {
-            // Log the exception if there is an error during execution
             logger.error("An error occurred while running the services: ", e);
         }
+    }
+
+    private static void ConfigureLogging() {
+        LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+        context.reset();
+
+        //Configure pattern layout for log messages
+        PatternLayoutEncoder encoder = new PatternLayoutEncoder();
+        encoder.setContext(context);
+        encoder.setPattern("%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n");
+        encoder.start();
+
+        ConsoleAppender consoleAppender = new ConsoleAppender<>();
+        consoleAppender.setContext(context);
+        consoleAppender.setEncoder(encoder);
+        consoleAppender.start();
+
+        FileAppender fileAppender = new FileAppender<>();
+        fileAppender.setContext(context);
+        fileAppender.setFile("logs/consumer.log");
+        fileAppender.setEncoder(encoder);
+        fileAppender.start();
+
+        //Set up root logger
+        Logger rootLogger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+        rootLogger.setLevel(Level.INFO);
+        rootLogger.addAppender(consoleAppender);
+        rootLogger.addAppender(fileAppender);
     }
 }

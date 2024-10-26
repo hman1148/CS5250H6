@@ -1,4 +1,5 @@
 import org.example.S3Service;
+import org.example.Widget;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -47,10 +48,17 @@ public class S3ServiceTest {
 
     @Test
     public void testStoreWidgetsInS3() {
-        // Set up mock behavior
-        when(s3Client.putObject(any(PutObjectRequest.class), any(RequestBody.class))).thenReturn(PutObjectResponse.builder().build());
 
-        s3Service.storeWidgetsInS3("testBucket", "widgetData");
+        Widget widget = new Widget("create", "1234", "1234", "hunter", "test", "test", null, "test");
+
+        // Mock PutObject response
+        when(s3Client.putObject(any(PutObjectRequest.class), any(RequestBody.class)))
+                .thenReturn(PutObjectResponse.builder().build());
+
+        // Test the storeWidgetsInS3 method
+        s3Service.storeWidgetsInS3("testBucket", widget);
+
+        // Verify that putObject was called once with the correct parameters
         verify(s3Client, times(1)).putObject(any(PutObjectRequest.class), any(RequestBody.class));
     }
 

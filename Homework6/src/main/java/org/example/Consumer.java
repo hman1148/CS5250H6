@@ -1,9 +1,7 @@
 package org.example;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import software.amazon.awssdk.core.exception.SdkException;
 
-import java.util.Map;
 
 public class Consumer {
 
@@ -21,21 +19,33 @@ public class Consumer {
     public void StartingReceving() {
         while (true) {
             try {
-                String widgetRequest = this.s3Service.readWidgetRequestsFromBucket(options.getBucket2());
+                // Read the widget requests
+                String widgetRequestJson = this.s3Service.readWidgetRequestsFromBucket(this.options.getBucket2());
 
-                if (!(String.valueOf(this.options.getBucket3()) == null)) {
-                    this.s3Service.storeWidgetsInS3(this.options.getBucket3(), widgetRequest);
-                } else if (!(String.valueOf(this.options.getDynamoDBTable()) == null)) {
-                    this.dynamoDBService.storeWidgetsInDynamoDB(this.options.getDynamoDBTable(), widgetRequest);
+                if (widgetRequestJson != null) {
+                    // Create the widget object and determine the request type
+                    Widget widget = objectMapper.readValue(widgetRequestJson, Widget.class);
+
+                    RequestType requestType = RequestType.fromString(widget.getType());
+
+                    switch (requestType) {
+                        case CREATE:
+                            processCreateRequest(widget);
+                            break;
+                        case UPDATE:
+                            System.out.println("Haven't implemented Update");
+                            break;
+                        case DELETE:
+                            System.out.println("Haven't implemented Delete");
+                            break;
+                        default:
+                            System.err.println("Unknown request type");
+                            break;
+                    }
+
+                } else {
+                    Thread.sleep(100);
                 }
-
-                Thread.sleep(100);
-            } catch (SdkException e) {
-                System.err.println("AWS SDK Error: " + e.getMessage());
-            } catch (InterruptedException e) {
-                System.err.println("Interrupted: " + e.getMessage());
-                Thread.currentThread().interrupt();
-                break;
             } catch (Exception e) {
                 System.err.println("Error: " + e.getMessage());
             }
@@ -47,15 +57,10 @@ public class Consumer {
             if (this.options.getBucket3() != null) {
                 s3Service.storeWidgetsInS3(this.options.getBucket3(), widget);
             } else if (this.options.getDynamoDBTable() != null) {
-                Map<String, Object> widgetAttributes = objectMapper.convertValue(widget, Map.class);
-
-                dynamoDBService.storeWidgetsInDynamoDB(this.options.getDynamoDBTable(), widgetAttributes);
+                dynamoDBService.storeWidgetsInDynamoDB(this.options.getDynamoDBTable(), widget);
             }
-
-
         } catch (Exception ex) {
-
+            System.err.println("Failed to process create request: " + widget.getWidgetId() + " Error: " + ex.getMessage());
         }
     }
-
 }

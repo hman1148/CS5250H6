@@ -3,11 +3,14 @@
  * Java 11
 
 # Unit Tests 
-    * Run `gradle test`
+     Run `gradle test`
 
 # Build Process 
-    * To build the code run `gradle build` 
-    * Jar file will be located build/libs/Homework6-10.all.jar"
+     To build the code run `gradle build` 
+     Jar file will be located build/libs/Homework6-10.all.jar
+     (Note if you want to build the code, you must do so in an ec2 instance, otherwise the unit tests will run in an infinite
+      loop trying to connect to EC2 credentials
+    
 
 # Application Options
 

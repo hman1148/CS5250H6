@@ -2,12 +2,15 @@ import org.example.Consumer;
 import org.example.DynamoDBService;
 import org.example.Options;
 import org.example.S3Service;
+import org.example.Widget;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import software.amazon.awssdk.core.exception.SdkException;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 public class ConsumerTest {
@@ -20,6 +23,7 @@ public class ConsumerTest {
 
     @Mock
     private Options options;
+
     private Consumer consumerTest;
 
     @BeforeEach
@@ -29,35 +33,44 @@ public class ConsumerTest {
     }
 
     @Test
-    public void testStartReceiving() throws  Exception {
+    public void testStartReceiving_S3Storage() throws Exception {
         when(options.getBucket2()).thenReturn("bucket2");
         when(options.getBucket3()).thenReturn("bucket3");
-        when(s3Service.readWidgetRequestsFromBucket("bucket2")).thenReturn("widgetData");
+        when(s3Service.readWidgetRequestsFromBucket("bucket2")).thenReturn("{\"widgetId\":\"1234\", \"owner\":\"Sue Smith\"}");
 
-        consumerTest.StartingReceving();
-        verify(s3Service, atLeastOnce()).storeWidgetsInS3("bucket3", "widgetData");
+        Thread consumerThread = new Thread(() -> consumerTest.StartingReceving());
+        consumerThread.start();
+        Thread.sleep(200);
+        consumerThread.interrupt();
+
+        verify(s3Service, atLeastOnce()).storeWidgetsInS3(eq("bucket3"), any(Widget.class));
     }
 
     @Test
-    public void testStartReceivingDynamoDB() throws Exception {
+    public void testStartReceiving_DynamoDBStorage() throws Exception {
         when(options.getBucket2()).thenReturn("bucket2");
         when(options.getDynamoDBTable()).thenReturn("widgetsTable");
-        when(s3Service.readWidgetRequestsFromBucket("bucket2")).thenReturn("widgetData");
+        when(s3Service.readWidgetRequestsFromBucket("bucket2")).thenReturn("{\"widgetId\":\"1234\", \"owner\":\"Sue Smith\"}");
 
-        consumerTest.StartingReceving();
+        Thread consumerThread = new Thread(() -> consumerTest.StartingReceving());
+        consumerThread.start();
+        Thread.sleep(200);
+        consumerThread.interrupt();
 
-        verify(dynamoDBService, atLeastOnce()).storeWidgetsInDynamoDB("widgetsTable", "widgetsData");
+        verify(dynamoDBService, atLeastOnce()).storeWidgetsInDynamoDB(eq("widgetsTable"), any(Widget.class));
     }
 
     @Test
-    public void testSTartReceivingSdkExcpetions() throws Exception {
+    public void testStartReceiving_SdkExceptions() throws Exception {
         when(options.getBucket2()).thenReturn("bucket2");
         when(s3Service.readWidgetRequestsFromBucket("bucket2")).thenThrow(SdkException.builder().message("AWS error").build());
 
-        consumerTest.StartingReceving();
+        Thread consumerThread = new Thread(() -> consumerTest.StartingReceving());
+        consumerThread.start();
+        Thread.sleep(200);
+        consumerThread.interrupt();
 
-        verify(s3Service, never()).storeWidgetsInS3(anyString(), anyString());
-        verify(dynamoDBService, never()).storeWidgetsInDynamoDB(anyString(), anyString());
+        verify(s3Service, never()).storeWidgetsInS3(anyString(), any(Widget.class));
+        verify(dynamoDBService, never()).storeWidgetsInDynamoDB(anyString(), any(Widget.class));
     }
-
 }
