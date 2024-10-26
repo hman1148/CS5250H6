@@ -8,7 +8,6 @@ import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class DynamoDBService {
 

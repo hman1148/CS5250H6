@@ -1,24 +1,38 @@
 package org.example;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Widget {
 
+    @JsonProperty("type")
     private String type;
+
+    @JsonProperty("requestId")
     private String requestId;
+
+    @JsonProperty("widgetId")
     private String widgetId;
+
+    @JsonProperty("owner")
     private String owner;
+
+    @JsonProperty("label")
     private String label;
+
+    @JsonProperty("description")
     private String description;
-    private List<OtherAttribute> otherAttributes;
 
-    @JsonIgnore
-    private String field;
+    @JsonProperty("otherAttributes")
+    private List<SubAttributes> otherAttributes;
 
-    public Widget(String type, String requestId, String widgetId, String owner, String label,
-                  String description, List<OtherAttribute> otherAttributes, String field) {
+    public Widget() {
+    }
+
+    public Widget(String type, String requestId, String widgetId, String owner,
+                  String label, String description, List<SubAttributes> otherAttributes) {
         this.type = type;
         this.requestId = requestId;
         this.widgetId = widgetId;
@@ -26,7 +40,17 @@ public class Widget {
         this.label = label;
         this.description = description;
         this.otherAttributes = otherAttributes;
-        this.field = field;
+    }
+
+    public Widget(String type, String requestId, String widgetId, String owner,
+                  String label, String description, String field, String extraField) {
+        this.type = type;
+        this.requestId = requestId;
+        this.widgetId = widgetId;
+        this.owner = owner;
+        this.label = label;
+        this.description = description;
+        this.otherAttributes = null;
     }
 
     public String getType() {
@@ -77,27 +101,24 @@ public class Widget {
         this.description = description;
     }
 
-    public List<OtherAttribute> getOtherAttributes() {
+    public List<SubAttributes> getOtherAttributes() {
         return otherAttributes;
     }
 
-    public void setOtherAttributes(List<OtherAttribute> otherAttributes) {
+    public void setOtherAttributes(List<SubAttributes> otherAttributes) {
         this.otherAttributes = otherAttributes;
     }
-
-    public String getField() {
-        return field;
-    }
-
-    public void setField(String field) {
-        this.field = field;
-    }
-
-    public static class OtherAttribute {
+    public static class SubAttributes {
+        @JsonProperty("name")
         private String name;
+
+        @JsonProperty("value")
         private String value;
 
-        public OtherAttribute(String name, String value) {
+        public SubAttributes() {
+        }
+
+        public SubAttributes(String name, String value) {
             this.name = name;
             this.value = value;
         }

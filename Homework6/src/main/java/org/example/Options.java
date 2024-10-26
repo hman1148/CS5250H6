@@ -53,7 +53,7 @@ public class Options implements Runnable {
         // Log the provided options
 
         ConfigureLogging();
-        
+
         logger.info("Starting application with the following options:");
         logger.info("Bucket 3: {}", Bucket3);
         logger.info("DynamoDB Table: {}", DynamoDBTable);

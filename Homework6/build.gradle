@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id 'application' // Apply the application plugin
-    id 'com.github.johnrengelman.shadow' version '8.1.1' // Apply the Shadow plugin
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'org.example'
@@ -18,7 +18,7 @@ dependencies {
     implementation 'info.picocli:picocli:4.7.4'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
     implementation(platform("org.apache.logging.log4j:log4j-bom:2.20.0"))
-    implementation 'ch.qos.logback:logback-classic:1.4.12'
+    implementation 'ch.qos.logback:logback-classic:1.2.11'
 
 
     // Mockito
